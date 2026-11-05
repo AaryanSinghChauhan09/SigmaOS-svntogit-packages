@@ -7,14 +7,14 @@ use std::fmt;
 
 /// Errors produced by this component. Fail-fast: errors are returned, not panicked.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Sigmaos_svntogit_packagesError {
+pub enum SvntogitPackagesError {
     /// The requested operation is not valid in the current state.
     InvalidState,
     /// Input failed validation.
     InvalidInput(String),
 }
 
-impl fmt::Display for Sigmaos_svntogit_packagesError {
+impl fmt::Display for SvntogitPackagesError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::InvalidState => write!(f, "invalid state"),
@@ -23,20 +23,20 @@ impl fmt::Display for Sigmaos_svntogit_packagesError {
     }
 }
 
-impl std::error::Error for Sigmaos_svntogit_packagesError {}
+impl std::error::Error for SvntogitPackagesError {}
 
 /// Core component type. Holds configuration; performs no I/O by default.
 #[derive(Debug, Clone, Default)]
-pub struct Sigmaos_svntogit_packages {
+pub struct SvntogitPackages {
     name: String,
 }
 
-impl Sigmaos_svntogit_packages {
+impl SvntogitPackages {
     /// Create a new component instance. Fails fast on empty names.
-    pub fn new(name: impl Into<String>) -> Result<Self, Sigmaos_svntogit_packagesError> {
+    pub fn new(name: impl Into<String>) -> Result<Self, SvntogitPackagesError> {
         let name = name.into();
         if name.trim().is_empty() {
-            return Err(Sigmaos_svntogit_packagesError::InvalidInput("name must not be empty".into()));
+            return Err(SvntogitPackagesError::InvalidInput("name must not be empty".into()));
         }
         Ok(Self { name })
     }
@@ -47,9 +47,9 @@ impl Sigmaos_svntogit_packages {
     }
 
     /// Perform the component's primary action. Returns a deterministic result.
-    pub fn run(&self) -> Result<String, Sigmaos_svntogit_packagesError> {
+    pub fn run(&self) -> Result<String, SvntogitPackagesError> {
         if self.name.is_empty() {
-            return Err(Sigmaos_svntogit_packagesError::InvalidState);
+            return Err(SvntogitPackagesError::InvalidState);
         }
         Ok(format!("{}: ok", self.name))
     }
@@ -62,18 +62,18 @@ mod tests {
     #[test]
     fn new_rejects_empty_name() {
         // Arrange / Act / Assert
-        assert!(matches!(Sigmaos_svntogit_packages::new("  "), Err(Sigmaos_svntogit_packagesError::InvalidInput(_))));
+        assert!(matches!(SvntogitPackages::new("  "), Err(SvntogitPackagesError::InvalidInput(_))));
     }
 
     #[test]
     fn run_returns_deterministic_result() {
-        let c = Sigmaos_svntogit_packages::new("test").unwrap();
+        let c = SvntogitPackages::new("test").unwrap();
         assert_eq!(c.run().unwrap(), "test: ok");
     }
 
     #[test]
     fn name_is_accessible() {
-        let c = Sigmaos_svntogit_packages::new("abc").unwrap();
+        let c = SvntogitPackages::new("abc").unwrap();
         assert_eq!(c.name(), "abc");
     }
 }
