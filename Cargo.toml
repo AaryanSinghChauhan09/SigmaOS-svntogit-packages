@@ -1,8 +1,15 @@
 [package]
-name = "sigmaos-svntogit-packages"
+name = "SigmaOS-svntogit-packages"
 version = "0.1.0"
 edition = "2021"
-license = "MIT"
-description = "Packages repo VCS migration tooling — SigmaOS component inspired by Arch Linux infrastructure."
+license = "Apache-2.0"
+description = "SigmaOS svntogit_packages component"
+
+[lib]
+name = "svntogit_packages"
+path = "src/lib.rs"
 
 [dependencies]
+thiserror = "1"
+
+[dev-dependencies]
